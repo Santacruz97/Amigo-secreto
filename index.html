@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amigo Secreto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url('https://source.unsplash.com/1600x900/?galaxy');
+            background-size: cover;
+            color: rgb(55, 202, 129);
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 5px 0;
+            font-size: 18px;
+            color: rgb(14, 14, 11); /* Se cambia el color para mayor visibilidad */
+        }
+        h2 {
+            color: rgb(14, 14, 11); /* Se cambia el color para mayor visibilidad */
+        }
+    </style>
+</head>
+<body>
+    <h1>Amigo Secreto</h1>
+    <input type="text" id="nombre" placeholder="Nombre del amigo">
+    <button onclick="agregarAmigo()">Agregar</button>
+    <h2>Lista de Amigos</h2>
+    <ul id="listaAmigos"></ul>
+    <button onclick="sortear()">Sortear Amigo Secreto</button>
+    <h2>Resultados</h2>
+    <ul id="resultado"></ul>
+
+    <script>
+        let amigos = [];
+
+        function agregarAmigo() {
+            let nombre = document.getElementById("nombre").value.trim();
+            if (nombre && !amigos.includes(nombre)) {
+                amigos.push(nombre);
+                document.getElementById("nombre").value = "";
+                actualizarLista();
+            }
+        }
+
+        function actualizarLista() {
+            let lista = document.getElementById("listaAmigos");
+            lista.innerHTML = "";
+            amigos.forEach(amigo => {
+                let li = document.createElement("li");
+                li.appendChild(document.createTextNode(amigo));
+                lista.appendChild(li);
+            });
+        }
+
+        function sortear() {
+            if (amigos.length < 2) {
+                alert("Se necesitan al menos 2 amigos para el sorteo.");
+                return;
+            }
+            let sorteados = [...amigos];
+            let resultado = [];
+            for (let i = 0; i < amigos.length; i++) {
+                let index;
+                do {
+                    index = Math.floor(Math.random() * sorteados.length);
+                } while (sorteados[index] === amigos[i]);
+                resultado.push(`${amigos[i]} -> ${sorteados[index]}`);
+                sorteados.splice(index, 1);
+            }
+            mostrarResultado(resultado);
+        }
+
+        function mostrarResultado(parejas) {
+            let lista = document.getElementById("resultado");
+            lista.innerHTML = "";
+            parejas.forEach(pareja => {
+                let li = document.createElement("li");
+                li.appendChild(document.createTextNode(pareja));
+                lista.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
